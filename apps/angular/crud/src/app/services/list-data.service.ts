@@ -10,6 +10,13 @@ import { TodoItem } from '../model/todo-item.model';
 export class ListDataService {
   constructor(private http: HttpClient) {}
 
+  fetch(): Observable<TodoItem[]> {
+    console.info('fetching all');
+    return this.http.get<TodoItem[]>(
+      'https://jsonplaceholder.typicode.com/todos',
+    );
+  }
+
   update(todo: TodoItem): Observable<TodoItem> {
     return this.http.put<TodoItem>(
       `https://jsonplaceholder.typicode.com/todos/${todo.id}`,
@@ -28,6 +35,8 @@ export class ListDataService {
   }
 
   delete(id: string) {
-    return this.http;
+    const uri: string = `https://jsonplaceholder.typicode.com/todos/${id}`;
+    console.info(`calling delete: ${uri}`);
+    return this.http.delete<TodoItem[]>(uri);
   }
 }
