@@ -1,0 +1,9 @@
+<ng-container *ngIf="!updating">
+  {{ todo.id }}
+  {{ todo.title }}
+  <button (click)="update(todo)">Update</button>
+</ng-container>
+<ng-container *ngIf="updating">
+  <mat-spinner></mat-spinner>
+</ng-container>
+
