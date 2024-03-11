@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { ImagePaths } from '../../constants/image-files.constants';
+import { StudentStore } from '../../data-access';
 import { FakeHttpService } from '../../data-access/fake-http.service';
-import { StudentStore } from '../../data-access/student.store';
 import { CardType } from '../../model/card.model';
 import { Student } from '../../model/student.model';
+import { DataService } from '../../services/data.service';
 import { CardComponent } from '../../ui/card/card.component';
 
 @Component({
@@ -10,7 +12,8 @@ import { CardComponent } from '../../ui/card/card.component';
   template: `
     <app-card
       [list]="students"
-      [type]="cardType"
+      [cardType]="cardType"
+      [cardImage]="imagePath"
       customClass="bg-light-green"></app-card>
   `,
   standalone: true,
@@ -26,15 +29,16 @@ import { CardComponent } from '../../ui/card/card.component';
 export class StudentCardComponent implements OnInit {
   students: Student[] = [];
   cardType = CardType.STUDENT;
+  imagePath = ImagePaths.Students;
 
   constructor(
     private http: FakeHttpService,
     private store: StudentStore,
+    private dataService: DataService,
   ) {}
 
   ngOnInit(): void {
-    this.http.fetchStudents$.subscribe((s) => this.store.addAll(s));
-
+    this.dataService.initData(CardType.STUDENT);
     this.store.students$.subscribe((s) => (this.students = s));
   }
 }
