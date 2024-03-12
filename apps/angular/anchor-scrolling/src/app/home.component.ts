@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { NavButtonComponent } from './nav-button.component';
 
 @Component({
   standalone: true,
-  imports: [NavButtonComponent],
+  imports: [NavButtonComponent, RouterLink],
   selector: 'app-home',
   template: `
-    <nav-button href="/foo" class="fixed left-1/2 top-3">Foo Page</nav-button>
+    <nav-button routerLink="/foo" class="fixed left-1/2 top-3">
+      Foo Page
+    </nav-button>
     <div id="top" class="h-screen bg-gray-500">
       Empty
       <nav-button href="#bottom">Scroll Bottom</nav-button>
