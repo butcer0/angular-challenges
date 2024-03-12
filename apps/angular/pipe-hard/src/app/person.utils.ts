@@ -15,3 +15,8 @@ export const PersonUtils = {
   showName,
   isAllowed,
 };
+
+export enum PersonUtilFns {
+  ShowName = 'showName',
+  IsAllowed = 'isAllowed',
+}
