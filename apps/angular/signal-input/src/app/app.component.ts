@@ -30,6 +30,7 @@ import { UserComponent } from './user.component';
       </button>
     </div>
     @if (showUser && !!name.value) {
+      <div>{{ name.value }}</div>
       <app-user
         [name]="name.value"
         [lastName]="lastName.value"
