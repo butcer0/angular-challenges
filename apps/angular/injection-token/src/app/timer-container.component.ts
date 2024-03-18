@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
-import { DEFAULT_TIMER } from './data';
+import { Component, Inject } from '@angular/core';
 import { TimerComponent } from './timer.component';
+// import { ActivatedRoute } from "@angular/router";
+import { TIMER_INTERVAL } from './injection-tokens/timer-interval';
+// import { toSignal } from "@angular/core/rxjs-interop";
+// import { interval } from "rxjs";
 @Component({
   selector: 'timer-container',
   standalone: true,
@@ -8,7 +11,7 @@ import { TimerComponent } from './timer.component';
   template: `
     <div class="flex gap-2">
       Timer container:
-      <p class="italic">(timer is {{ timer }}s)</p>
+      <p class="italic">(timer is {{ timerInterval }}s)</p>
     </div>
     <timer />
   `,
@@ -17,5 +20,5 @@ import { TimerComponent } from './timer.component';
   },
 })
 export class TimerContainerComponent {
-  timer = DEFAULT_TIMER;
+  constructor(@Inject(TIMER_INTERVAL) public timerInterval: number) {}
 }
