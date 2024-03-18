@@ -1,6 +1,8 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Observable, map } from 'rxjs';
 import { FakeServiceService } from './fake.service';
 
 interface MenuItem {
@@ -24,7 +26,7 @@ interface MenuItem {
   `,
   styles: [
     `
-      a.isSelected {
+      .isSelected {
         @apply bg-gray-600 text-white;
       }
     `,
@@ -39,16 +41,17 @@ export class NavigationComponent {
 
 @Component({
   standalone: true,
-  imports: [NavigationComponent, NgIf, AsyncPipe],
+  imports: [NavigationComponent, NgIf, AsyncPipe, MatProgressSpinner],
   template: `
-    <ng-container *ngIf="info$ | async as info">
-      <ng-container *ngIf="info !== null; else noInfo">
-        <app-nav [menus]="getMenu(info)" />
+    <ng-container *ngIf="menus$ | async as menus">
+      <ng-container *ngIf="menus; else noInfo">
+        <app-nav [menus]="menus" />
       </ng-container>
     </ng-container>
 
     <ng-template #noInfo>
-      <app-nav [menus]="getMenu('')" />
+      <h3>No Info</h3>
+      <mat-spinner></mat-spinner>
     </ng-template>
   `,
   host: {},
@@ -56,9 +59,11 @@ export class NavigationComponent {
 export class MainNavigationComponent {
   private fakeBackend = inject(FakeServiceService);
 
-  readonly info$ = this.fakeBackend.getInfoFromBackend();
+  public menus$: Observable<MenuItem[]> = this.fakeBackend
+    .getInfoFromBackend()
+    .pipe(map((info: string) => this.getMenu(info)));
 
-  getMenu(prop: string) {
+  getMenu(prop: string): MenuItem[] {
     return [
       { path: '/foo', name: `Foo ${prop}` },
       { path: '/bar', name: `Bar ${prop}` },

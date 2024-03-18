@@ -3,5 +3,5 @@ import { delay, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class FakeServiceService {
-  getInfoFromBackend = () => of('Client app').pipe(delay(500));
+  getInfoFromBackend = () => of('Client app').pipe(delay(250));
 }
